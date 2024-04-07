@@ -1,0 +1,14 @@
+numpy==1.20.3
+pandas==1.3.4
+matplotlib==3.4.3
+scipy==1.7.1
+sklearn==0.0.post1
+nltk==3.6.5
+vaderSentiment==3.3.2
+tensorflow==2.11.0
+torch==1.11.0
+transformers==4.20.1
+snscrape @ git+https://github.com/JustAnotherArchivist/snscrape.git@c3b216c3cb8593513a018eb3ec4fd6f18d3aba5b
+lightgbm==3.3.5
+seaborn
+mlxtend==0.21.0
