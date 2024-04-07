@@ -157,3 +157,205 @@ def appendConcretenessScore(data, targetCol, fileName):
     concrList.to_csv(targetFile, index=False)
 
     return pd.concat([data, concrList], axis=1)
+
+
+def tk(text):
+    return word_tokenize(re.sub(r'[^\w\s]', '', str(text).lower())) 
+
+def stopword(tokens):
+    result = []
+    for w in tokens:
+        if w not in stop_words:
+            result.append(w)
+    return result
+
+def lemma(tokens):
+    result = []
+
+    for token in tokens:
+        stemmed_word = wnl.lemmatize(token)
+        result.append(stemmed_word)
+    return result
+
+
+def valence(tokens):
+    
+    count = 0
+    result = 0
+    
+    for token in tokens:
+        try:
+            valence = vad["V.Mean.Sum"][token]
+            result += valence
+            count += 1
+        except KeyError:
+            continue
+            
+    if count > 0:
+        return result/count
+    return 5
+
+def arousal(tokens):
+    
+    count = 0
+    result = 0
+    
+    for token in tokens:
+        try:
+            arousal = vad["A.Mean.Sum"][token]
+            result += arousal
+            count += 1
+        except KeyError:
+            continue
+            
+    if count > 0:
+        return result/count
+    return 5
+
+def dominance(tokens):
+    
+    count = 0
+    result = 0
+    
+    for token in tokens:
+        try:
+            dominance = vad["D.Mean.Sum"][token]
+            result += dominance
+            count += 1
+        except KeyError:
+            continue
+            
+    if count > 0:
+        return result/count
+    return 5
+
+
+def appendVAD(data,targetCol, fileName):
+    
+    targetPrefix = "VADScore_"
+    targetFile = "data/dynamic/" + targetPrefix + "_" + fileName + ".csv"
+    
+    if os.path.isfile(targetFile):
+        VADList = pd.read_csv(targetFile)
+        return pd.concat([data, VADList], axis = 1)
+    
+    Valence = []
+    for i in range(len(data)):
+        Valence.append(valence(lemma(stopword(tk(data[targetCol][i]))))) 
+    Valence = pd.DataFrame(Valence, columns = ["valence"])
+
+    Arousal = []
+    for i in range(len(data)):
+        Arousal.append(arousal(lemma(stopword(tk(data[targetCol][i]))))) 
+    Arousal = pd.DataFrame(Arousal, columns = ["arousal"])
+    
+    Dominance = []
+    for i in range(len(data)):
+        Dominance.append(dominance(lemma(stopword(tk(data[targetCol][i]))))) 
+    Dominance = pd.DataFrame(Dominance, columns = ["dominance"])
+    
+    
+    VADList = pd.concat([Valence, Arousal, Dominance], axis = 1)
+    VADList.to_csv(targetFile, index=False)
+    
+    
+    
+    return pd.concat([data, VADList], axis = 1)
+    
+
+def appendFrequency(data,targetCol, fileName):
+    #Max, Median, Median (Content Word), Min (Content Word)
+
+    freq = pd.read_csv("data/misc/unigram_freq.csv", index_col = 0).reset_index().reset_index()
+    freq["index"] = freq["index"] + 1
+    rankDict = freq.set_index("word", drop=True).to_dict()["index"]
+    freqDict = pd.read_csv("data/misc/unigram_freq.csv", index_col = 0).to_dict()["count"]
+    
+    targetPrefix = "wordFreq_"
+    targetFile = "data/dynamic/" + targetPrefix + "_" + fileName + ".csv"
+    
+    if os.path.isfile(targetFile):
+        df = pd.read_csv(targetFile)
+        return pd.concat([data, df], axis = 1)
+    
+    df = pd.DataFrame()
+    
+    
+    #Max
+    x = []
+    for i in data[targetCol]:
+        tokens = tk(i)
+        v = -1
+        for j in tokens:
+            try:
+                if rankDict[j] > v:
+                    v = rankDict[j] 
+            except KeyError:
+                continue
+        x.append(v)
+    x = pd.DataFrame(x, columns = ["MaxRank"])
+        
+    df = pd.concat([df, x], axis = 1)
+    
+    #Median
+    x = []
+    for i in data[targetCol]:
+        tokens = tk(i)
+        v = []
+        for j in tokens:
+            try:
+                v.append(rankDict[j])
+            except KeyError:
+                continue
+        try:
+            x.append(median(v))
+        except StatisticsError:
+            x.append(-1)
+    x = pd.DataFrame(x, columns = ["MedianRank"])
+        
+    df = pd.concat([df, x], axis = 1)
+    
+    
+    #Median
+    x = []
+    for i in data[targetCol]:
+        tokens = stopword(tk(i))
+        v = []
+        for j in tokens:
+            try:
+                v.append(rankDict[j])
+            except KeyError:
+                continue
+        try:
+            x.append(median(v))
+        except StatisticsError:
+            x.append(-1)
+    x = pd.DataFrame(x, columns = ["MedianContentRank"])
+        
+    df = pd.concat([df, x], axis = 1)
+    
+    
+    #Min
+    x = []
+    for i in data[targetCol]:
+        tokens = stopword(tk(i))
+        v = 999999
+        for j in tokens:
+            try:
+                if rankDict[j] < v:
+                    v = rankDict[j]
+            except KeyError:
+                continue
+        x.append(v)
+    x = pd.DataFrame(x, columns = ["MinContentRank"])
+        
+    df = pd.concat([df, x], axis = 1)
+    
+    df.to_csv(targetFile, index=False)
+    
+    return pd.concat([data, df], axis = 1)
+    
+
+# misc(?)
+vad = pd.read_csv("data/misc/BRM-emot-submit.csv", index_col = 1)
+freq = pd.read_csv("data/misc/unigram_freq.csv")
