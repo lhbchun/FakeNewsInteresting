@@ -1,0 +1,2 @@
+@RonColeman The question is this:
+Is it a HIPAA violation if your company collects your personal health information (vaccination status) and then shares it external to the company (say, to the government or a government contractor)?

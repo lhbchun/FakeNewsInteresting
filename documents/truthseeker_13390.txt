@@ -1,0 +1,1 @@
+Now imagine a test with poor specificity. You could have a (very bad) antibody test that turned up a false positive for everyone who had been infected with a mild coronavirus, like the ones that cause the common cold. 10/12

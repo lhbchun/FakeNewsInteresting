@@ -1,0 +1,1 @@
+Currently seeing cases going down but test positivity increasing. Wonder which one is real - is spread increasing but lower testing underestimates it, or is spread decreasing but positivity going up because only suspected cases are being tested?

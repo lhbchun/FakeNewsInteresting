@@ -1,0 +1,3 @@
+@troller_lib @richardursomd Brief history of mRNA technology.  
+
+Invented in the 1960s. Research tool in plants,  animals, germs. Entered medicine in the early 1990s (cancer treatment, gene therapy), first mRNA vaccine research mid-1990s. First in-human trials 2009 (rabies): safe, too low efficacy for use.

@@ -1,0 +1,1 @@
+@Noahpinion I thought its pretty clear, rational and correct why theyre not testing: they just dont have the capacity yet. On average each they need to test a couple of times per person to confirm infection. Most states have capacity of about 50 tests a day, which means about 25 people.

@@ -1,0 +1,3 @@
+@EricTopol @BenFMaier @DirkBrockmann @rki_de "In Germany, an estimated average vaccine efficacy of 72% against symptomatic COVID-19 in adults"
+Appears to be too high, leading to a bias of underestimation breakthrough infections.
+Asymptomatic transmission is also not modelled.

@@ -1,0 +1,1 @@
+@nadiajones1 @fleetstreetfox Doesn't quite work like that - you can't test if cases aren't there. If you're testing less but there are more cases you expect to see the % of tests that are positive go up (the positivity rate) - it's not, it's been going down, which suggests less testing because less cases.

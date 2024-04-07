@@ -1,0 +1,11 @@
+These 4 coronaviruses cause mild respiratory illnesses, such as the common cold, in humans 
+They are:
+
+229E
+NL63
+OC43
+HKU1
+
+Influenza type A is also a corona virus
+
+Because #CV19 has never been properly isolated your positive PCR test can be picking up any of these

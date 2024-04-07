@@ -1,0 +1,15 @@
+How states r hiding #Covid19 cases
+#Bihar
+Tests/Million: 533
+(MH:2980 National:2110)
+Growth rate: 12%
+(MH:6% Nat:5.13%)
+
+Mortality Rate:
+#Gujarat: 6.11%
+#WestBengal: 7.42%
+(Nat:2.91% MH:3.25%)
+
+#Delhi
+Testing reduced by 50% but cases per day is increasing
+#CoronaVirus

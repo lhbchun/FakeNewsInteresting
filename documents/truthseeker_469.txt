@@ -1,0 +1,5 @@
+@SenatorCaesar @nspector4 @sunlorrie Texas is barely testing: 351,775
+Canada has done &gt; 940,000 tests -- more than 2x tests per capita in Canada. 
+
+Lack of tests has a multiplier effect since close contacts aren't tested; so at a transmission rate (Rt) of 1, double Texas # again: 136/million
+Canada: 107/million

@@ -1,0 +1,2 @@
+@MLevitt_NP2013 The vaccine trials had Covid-19 (disease with symptoms) as endpoint.
+It was not designed to study transmission (including asymptomatic) of SARS-CoV-2 infection.

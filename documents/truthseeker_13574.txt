@@ -1,0 +1,1 @@
+Common PCR test.. There are tests that may have several limitations, for example, some might also react to seasonal coronaviruses  such as those that cause a common cold  and produce a positive result, without detecting the specific antibodies to SARS-CoV-2.

@@ -1,0 +1,3 @@
+@Robrt_McMillan @nsgov "Anything above 5% suggests too few test"
+
+Based on yesterday's briefing we're reducing testing next week so we're going to miss even more cases and then Strang will be able to (falsely) claim that cases are not going up as fast anymore because our 2 waning doses are stopping it

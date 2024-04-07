@@ -1,0 +1,5 @@
+@JimDMiller &gt; vaccine-escape is that virus has higher overall higher fitness 
+
+A vaccine-escape variant will probably have no advantage, or even a slight disadvantage in an unvaccinated population. 
+
+But in a mixed-vaccination-status population, it will have a huge fitness advantage.
