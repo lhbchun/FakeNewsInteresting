@@ -5,6 +5,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+from verboseLogger import Logger
+
 import datetime
 import time
 import calendar
@@ -160,7 +162,8 @@ def appendConcretenessScore(data, targetCol, fileName):
 
 
 def tk(text):
-    return word_tokenize(re.sub(r'[^\w\s]', '', str(text).lower())) 
+    return word_tokenize(re.sub(r"[^\w\s]", "", str(text).lower()))
+
 
 def stopword(tokens):
     result = []
@@ -168,6 +171,7 @@ def stopword(tokens):
         if w not in stop_words:
             result.append(w)
     return result
+
 
 def lemma(tokens):
     result = []
@@ -179,10 +183,10 @@ def lemma(tokens):
 
 
 def valence(tokens):
-    
+
     count = 0
     result = 0
-    
+
     for token in tokens:
         try:
             valence = vad["V.Mean.Sum"][token]
@@ -190,16 +194,17 @@ def valence(tokens):
             count += 1
         except KeyError:
             continue
-            
+
     if count > 0:
-        return result/count
+        return result / count
     return 5
 
+
 def arousal(tokens):
-    
+
     count = 0
     result = 0
-    
+
     for token in tokens:
         try:
             arousal = vad["A.Mean.Sum"][token]
@@ -207,16 +212,17 @@ def arousal(tokens):
             count += 1
         except KeyError:
             continue
-            
+
     if count > 0:
-        return result/count
+        return result / count
     return 5
 
+
 def dominance(tokens):
-    
+
     count = 0
     result = 0
-    
+
     for token in tokens:
         try:
             dominance = vad["D.Mean.Sum"][token]
@@ -224,64 +230,64 @@ def dominance(tokens):
             count += 1
         except KeyError:
             continue
-            
+
     if count > 0:
-        return result/count
+        return result / count
     return 5
 
 
-def appendVAD(data,targetCol, fileName):
-    
+def appendVAD(data, targetCol, fileName):
+
     targetPrefix = "VADScore_"
     targetFile = "data/dynamic/" + targetPrefix + "_" + fileName + ".csv"
-    
+
     if os.path.isfile(targetFile):
         VADList = pd.read_csv(targetFile)
-        return pd.concat([data, VADList], axis = 1)
-    
+        return pd.concat([data, VADList], axis=1)
+
     Valence = []
     for i in range(len(data)):
-        Valence.append(valence(lemma(stopword(tk(data[targetCol][i]))))) 
-    Valence = pd.DataFrame(Valence, columns = ["valence"])
+        Valence.append(valence(lemma(stopword(tk(data[targetCol][i])))))
+    Valence = pd.DataFrame(Valence, columns=["valence"])
 
     Arousal = []
     for i in range(len(data)):
-        Arousal.append(arousal(lemma(stopword(tk(data[targetCol][i]))))) 
-    Arousal = pd.DataFrame(Arousal, columns = ["arousal"])
-    
+        Arousal.append(arousal(lemma(stopword(tk(data[targetCol][i])))))
+    Arousal = pd.DataFrame(Arousal, columns=["arousal"])
+
     Dominance = []
     for i in range(len(data)):
-        Dominance.append(dominance(lemma(stopword(tk(data[targetCol][i]))))) 
-    Dominance = pd.DataFrame(Dominance, columns = ["dominance"])
-    
-    
-    VADList = pd.concat([Valence, Arousal, Dominance], axis = 1)
+        Dominance.append(dominance(lemma(stopword(tk(data[targetCol][i])))))
+    Dominance = pd.DataFrame(Dominance, columns=["dominance"])
+
+    VADList = pd.concat([Valence, Arousal, Dominance], axis=1)
     VADList.to_csv(targetFile, index=False)
-    
-    
-    
-    return pd.concat([data, VADList], axis = 1)
-    
 
-def appendFrequency(data,targetCol, fileName):
-    #Max, Median, Median (Content Word), Min (Content Word)
+    return pd.concat([data, VADList], axis=1)
 
-    freq = pd.read_csv("data/misc/unigram_freq.csv", index_col = 0).reset_index().reset_index()
+
+def appendFrequency(data, targetCol, fileName):
+    # Max, Median, Median (Content Word), Min (Content Word)
+
+    freq = (
+        pd.read_csv("data/misc/unigram_freq.csv", index_col=0)
+        .reset_index()
+        .reset_index()
+    )
     freq["index"] = freq["index"] + 1
     rankDict = freq.set_index("word", drop=True).to_dict()["index"]
-    freqDict = pd.read_csv("data/misc/unigram_freq.csv", index_col = 0).to_dict()["count"]
-    
+    freqDict = pd.read_csv("data/misc/unigram_freq.csv", index_col=0).to_dict()["count"]
+
     targetPrefix = "wordFreq_"
     targetFile = "data/dynamic/" + targetPrefix + "_" + fileName + ".csv"
-    
+
     if os.path.isfile(targetFile):
         df = pd.read_csv(targetFile)
-        return pd.concat([data, df], axis = 1)
-    
+        return pd.concat([data, df], axis=1)
+
     df = pd.DataFrame()
-    
-    
-    #Max
+
+    # Max
     x = []
     for i in data[targetCol]:
         tokens = tk(i)
@@ -289,15 +295,15 @@ def appendFrequency(data,targetCol, fileName):
         for j in tokens:
             try:
                 if rankDict[j] > v:
-                    v = rankDict[j] 
+                    v = rankDict[j]
             except KeyError:
                 continue
         x.append(v)
-    x = pd.DataFrame(x, columns = ["MaxRank"])
-        
-    df = pd.concat([df, x], axis = 1)
-    
-    #Median
+    x = pd.DataFrame(x, columns=["MaxRank"])
+
+    df = pd.concat([df, x], axis=1)
+
+    # Median
     x = []
     for i in data[targetCol]:
         tokens = tk(i)
@@ -311,12 +317,11 @@ def appendFrequency(data,targetCol, fileName):
             x.append(median(v))
         except StatisticsError:
             x.append(-1)
-    x = pd.DataFrame(x, columns = ["MedianRank"])
-        
-    df = pd.concat([df, x], axis = 1)
-    
-    
-    #Median
+    x = pd.DataFrame(x, columns=["MedianRank"])
+
+    df = pd.concat([df, x], axis=1)
+
+    # Median
     x = []
     for i in data[targetCol]:
         tokens = stopword(tk(i))
@@ -330,12 +335,11 @@ def appendFrequency(data,targetCol, fileName):
             x.append(median(v))
         except StatisticsError:
             x.append(-1)
-    x = pd.DataFrame(x, columns = ["MedianContentRank"])
-        
-    df = pd.concat([df, x], axis = 1)
-    
-    
-    #Min
+    x = pd.DataFrame(x, columns=["MedianContentRank"])
+
+    df = pd.concat([df, x], axis=1)
+
+    # Min
     x = []
     for i in data[targetCol]:
         tokens = stopword(tk(i))
@@ -347,49 +351,58 @@ def appendFrequency(data,targetCol, fileName):
             except KeyError:
                 continue
         x.append(v)
-    x = pd.DataFrame(x, columns = ["MinContentRank"])
-        
-    df = pd.concat([df, x], axis = 1)
-    
+    x = pd.DataFrame(x, columns=["MinContentRank"])
+
+    df = pd.concat([df, x], axis=1)
+
     df.to_csv(targetFile, index=False)
-    
-    return pd.concat([data, df], axis = 1)
+
+    return pd.concat([data, df], axis=1)
+
 
 def emptyDocument():
     target = "C://Users/chun_/GisPy/data/documents"
     for filename in os.listdir(target):
         os.remove(target + "/" + filename)
 
+
 def AddDocumentTofolder(df, prefix):
-    
+
     target = "C://Users/chun_/GisPy/data/documents"
     count = 0
-    
+
     for content in df:
-        with open( target + "/" + prefix + "_" + str(count) + ".txt", "w", encoding="utf-8") as outfile:
+        with open(
+            target + "/" + prefix + "_" + str(count) + ".txt", "w", encoding="utf-8"
+        ) as outfile:
             outfile.write(content)
         count += 1
 
 
-def appendGisPyData(data,fileName):
-    
+def appendGisPyData(data, fileName):
+
     gisPyResult = pd.DataFrame([])
     directory = "data/dynamic/gispy/"
-    
+
     for filename in os.listdir(directory):
         f = os.path.join(directory, filename)
         if os.path.isfile(f):
             appendResult = pd.read_csv(f)
-            appendResult = appendResult[appendResult["d_id"].str.contains("^" + fileName +"_")].reset_index()
-            gisPyResult = pd.concat([gisPyResult, appendResult]) ##
+            appendResult = appendResult[
+                appendResult["d_id"].str.contains("^" + fileName + "_")
+            ].reset_index()
+            gisPyResult = pd.concat([gisPyResult, appendResult])  ##
 
     for i in range(len(gisPyResult)):
-        gisPyResult["d_id"][i] = re.sub("^" + fileName +"_", "" ,gisPyResult["d_id"][i])
-        gisPyResult["d_id"][i] = re.sub(".txt*","",gisPyResult["d_id"][i])
+        gisPyResult["d_id"][i] = re.sub(
+            "^" + fileName + "_", "", gisPyResult["d_id"][i]
+        )
+        gisPyResult["d_id"][i] = re.sub(".txt*", "", gisPyResult["d_id"][i])
         gisPyResult["d_id"][i] = int(gisPyResult["d_id"][i])
-    gisPyResult = gisPyResult.set_index("d_id").drop(["index","text"], axis = 1).sort_index()
-    return pd.concat([data,gisPyResult], axis = 1)
-
+    gisPyResult = (
+        gisPyResult.set_index("d_id").drop(["index", "text"], axis=1).sort_index()
+    )
+    return pd.concat([data, gisPyResult], axis=1)
 
 
 def compileHydratedData(directory):
@@ -397,75 +410,109 @@ def compileHydratedData(directory):
     for filename in os.listdir(directory):
         f = os.path.join(directory, filename)
         if os.path.isdir(f):
-            returnValue = pd.concat([returnValue, compileHydratedData(f)]) ##
+            returnValue = pd.concat([returnValue, compileHydratedData(f)])  ##
         else:
             jsonDict = json.load(open(f))
-            returnValue = pd.concat([returnValue, pd.DataFrame([[jsonDict[i] for i in jsonDict]], columns = [i for i in jsonDict]) ])
+            returnValue = pd.concat(
+                [
+                    returnValue,
+                    pd.DataFrame(
+                        [[jsonDict[i] for i in jsonDict]], columns=[i for i in jsonDict]
+                    ),
+                ]
+            )
     return returnValue
 
-offcomm = compileHydratedData("data\\officalcomm").reset_index(drop=True)
+
 
 def isCovidRelated(text):
-    return len(re.findall((".*(covid|corona|demic|quarantin| case| test|virus|vaccin|spread).*"), text.lower())) > 0
+    return (
+        len(
+            re.findall(
+                (".*(covid|corona|demic|quarantin| case| test|virus|vaccin|spread).*"),
+                text.lower(),
+            )
+        )
+        > 0
+    )
+
 
 def compileHydratedData(directory):
     returnValue = pd.DataFrame()
     for filename in os.listdir(directory):
         f = os.path.join(directory, filename)
         if os.path.isdir(f):
-            returnValue = pd.concat([returnValue, compileHydratedData(f)]) ##
+            returnValue = pd.concat([returnValue, compileHydratedData(f)])  ##
         else:
             jsonDict = json.load(open(f))
-            returnValue = pd.concat([returnValue, pd.DataFrame([[jsonDict[i] for i in jsonDict]], columns = [i for i in jsonDict]) ])
+            returnValue = pd.concat(
+                [
+                    returnValue,
+                    pd.DataFrame(
+                        [[jsonDict[i] for i in jsonDict]], columns=[i for i in jsonDict]
+                    ),
+                ]
+            )
     return returnValue
 
 
 def isCovidRelated(text):
-    return len(re.findall((".*(covid|corona|demic|quarantin| case| test|virus|vaccin|spread).*"), text.lower())) > 0
-
+    return (
+        len(
+            re.findall(
+                (".*(covid|corona|demic|quarantin| case| test|virus|vaccin|spread).*"),
+                text.lower(),
+            )
+        )
+        > 0
+    )
 
 
 # misc(?)
-def express():
-    vad = pd.read_csv("data/misc/BRM-emot-submit.csv", index_col = 1)
+def express(logger: Logger):
+    vad = pd.read_csv("data/misc/BRM-emot-submit.csv", index_col=1)
     freq = pd.read_csv("data/misc/unigram_freq.csv")
     emptyDocument()
     # AddDocumentTofolder(pd.read_csv("data/covidRumor/Twitter.csv")["content"], "covidRumor")
     # AddDocumentTofolder(pd.read_csv("data/preprocessed/officalComm.csv")["rawContent"], "offComm")
     # AddDocumentTofolder(pd.read_csv("data/constraintAAAI/Constraint_Train.csv")["tweet"], "constraintAAAI")
-    AddDocumentTofolder(pd.read_csv("data/preprocessed/coaid_NoFeature.csv")["rawContent"], "coaid")
+    AddDocumentTofolder(
+        pd.read_csv("data/preprocessed/coaid_NoFeature.csv")["rawContent"], "coaid"
+    )
 
-    #filter
+    # filter
     ind = offcomm["rawContent"].apply(isCovidRelated)
     offcomm = offcomm[ind].reset_index(drop=True)
     offcomm = offcomm[offcomm["lang"] == "en"].reset_index(drop=True)
-    #calculate
-    offcomm = appendSentimentScore(offcomm,"rawContent", "offComm")
-    offcomm = appendVAD(offcomm,"rawContent", "offComm")
-    offcomm = appendFrequency(offcomm,"rawContent", "offComm")
-    offcomm = appendArousalScore(offcomm,"rawContent", "offComm")
-    offcomm = appendDominanceScore(offcomm,"rawContent", "offComm")
-    offcomm = appendConcretenessScore(offcomm,"rawContent", "offComm")
+    # calculate
+    offcomm = appendSentimentScore(offcomm, "rawContent", "offComm")
+    offcomm = appendVAD(offcomm, "rawContent", "offComm")
+    offcomm = appendFrequency(offcomm, "rawContent", "offComm")
+    offcomm = appendArousalScore(offcomm, "rawContent", "offComm")
+    offcomm = appendDominanceScore(offcomm, "rawContent", "offComm")
+    offcomm = appendConcretenessScore(offcomm, "rawContent", "offComm")
     offcomm = appendGisPyData(offcomm, "offComm")
     offcomm.to_csv("data/preprocessed/officalComm.csv")
 
     covidrumor = pd.read_csv("data/covidRumor/Twitter.csv")
-    covidrumor = appendSentimentScore(covidrumor,"content", "covidRumor")
-    covidrumor = appendVAD(covidrumor,"content", "covidRumor")
-    covidrumor = appendFrequency(covidrumor,"content", "covidRumor")
-    covidrumor = appendArousalScore(covidrumor,"content", "covidRumor")
-    covidrumor = appendDominanceScore(covidrumor,"content", "covidRumor")
-    covidrumor = appendConcretenessScore(covidrumor,"content", "covidRumor")
+    covidrumor = appendSentimentScore(covidrumor, "content", "covidRumor")
+    covidrumor = appendVAD(covidrumor, "content", "covidRumor")
+    covidrumor = appendFrequency(covidrumor, "content", "covidRumor")
+    covidrumor = appendArousalScore(covidrumor, "content", "covidRumor")
+    covidrumor = appendDominanceScore(covidrumor, "content", "covidRumor")
+    covidrumor = appendConcretenessScore(covidrumor, "content", "covidRumor")
     covidrumor = appendGisPyData(covidrumor, "covidRumor")
     covidrumor.to_csv("data/preprocessed/covidRumor.csv")
 
-    constraintAAAI = pd.read_csv("data/constraintAAAI/Constraint_Train.csv", index_col = 0).reset_index()
-    constraintAAAI = appendSentimentScore(constraintAAAI,"tweet", "constraintAAAI")
-    constraintAAAI = appendVAD(constraintAAAI,"tweet", "constraintAAAI")
-    constraintAAAI = appendFrequency(constraintAAAI,"tweet", "constraintAAAI")
-    constraintAAAI = appendArousalScore(constraintAAAI,"tweet", "constraintAAAI")
-    constraintAAAI = appendDominanceScore(constraintAAAI,"tweet", "constraintAAAI")
-    constraintAAAI = appendConcretenessScore(constraintAAAI,"tweet", "constraintAAAI")
+    constraintAAAI = pd.read_csv(
+        "data/constraintAAAI/Constraint_Train.csv", index_col=0
+    ).reset_index()
+    constraintAAAI = appendSentimentScore(constraintAAAI, "tweet", "constraintAAAI")
+    constraintAAAI = appendVAD(constraintAAAI, "tweet", "constraintAAAI")
+    constraintAAAI = appendFrequency(constraintAAAI, "tweet", "constraintAAAI")
+    constraintAAAI = appendArousalScore(constraintAAAI, "tweet", "constraintAAAI")
+    constraintAAAI = appendDominanceScore(constraintAAAI, "tweet", "constraintAAAI")
+    constraintAAAI = appendConcretenessScore(constraintAAAI, "tweet", "constraintAAAI")
     constraintAAAI = appendGisPyData(constraintAAAI, "constraintAAAI")
     constraintAAAI.to_csv("data/preprocessed/constraintAAAI.csv")
 
@@ -474,27 +521,32 @@ def express():
     # hydrateTweets(coaid, "data/coaid/", "data/failed/")
     coaid = compileHydratedData("data\\coaid").reset_index(drop=True)
     coaid.to_csv("data/preprocessed/coaid_NoFeature.csv")
-    coaid = appendSentimentScore(coaid,"rawContent", "coaid")
-    coaid = appendVAD(coaid,"rawContent", "coaid")
-    coaid = appendFrequency(coaid,"rawContent", "coaid")
-    coaid = appendArousalScore(coaid,"rawContent", "coaid")
-    coaid = appendDominanceScore(coaid,"rawContent", "coaid")
-    coaid = appendConcretenessScore(coaid,"rawContent", "coaid")
+    coaid = appendSentimentScore(coaid, "rawContent", "coaid")
+    coaid = appendVAD(coaid, "rawContent", "coaid")
+    coaid = appendFrequency(coaid, "rawContent", "coaid")
+    coaid = appendArousalScore(coaid, "rawContent", "coaid")
+    coaid = appendDominanceScore(coaid, "rawContent", "coaid")
+    coaid = appendConcretenessScore(coaid, "rawContent", "coaid")
     coaid = appendGisPyData(coaid, "coaid")
     coaid.to_csv("data/preprocessed/coaid.csv")
+    
+    offcomm = compileHydratedData("data\\officalcomm").reset_index(drop=True)
 
-
-    truthseeker = pd.read_csv("data/Truth_Seeker_Model_Dataset.csv", index_col = 0)
-    truthseeker = truthseeker[[isCovidRelated(keywords) for keywords in truthseeker["manual_keywords"]]].reset_index(drop = True)
+    truthseeker = pd.read_csv("data/Truth_Seeker_Model_Dataset.csv", index_col=0)
+    truthseeker = truthseeker[
+        [isCovidRelated(keywords) for keywords in truthseeker["manual_keywords"]]
+    ].reset_index(drop=True)
     truthseeker.to_csv("data/preprocessed/truthseeker_NoFeature.csv")
     emptyDocument()
     AddDocumentTofolder(truthseeker["tweet"], "truthseeker")
-    truthseeker = pd.read_csv("data/preprocessed/truthseeker_NoFeature.csv", index_col = 0)
-    truthseeker = appendSentimentScore(truthseeker,"tweet", "truthseeker")
-    truthseeker = appendVAD(truthseeker,"tweet", "truthseeker")
-    truthseeker = appendFrequency(truthseeker,"tweet", "truthseeker")
-    truthseeker = appendArousalScore(truthseeker,"tweet", "truthseeker")
-    truthseeker = appendDominanceScore(truthseeker,"tweet", "truthseeker")
-    truthseeker = appendConcretenessScore(truthseeker,"tweet", "truthseeker")
+    truthseeker = pd.read_csv(
+        "data/preprocessed/truthseeker_NoFeature.csv", index_col=0
+    )
+    truthseeker = appendSentimentScore(truthseeker, "tweet", "truthseeker")
+    truthseeker = appendVAD(truthseeker, "tweet", "truthseeker")
+    truthseeker = appendFrequency(truthseeker, "tweet", "truthseeker")
+    truthseeker = appendArousalScore(truthseeker, "tweet", "truthseeker")
+    truthseeker = appendDominanceScore(truthseeker, "tweet", "truthseeker")
+    truthseeker = appendConcretenessScore(truthseeker, "tweet", "truthseeker")
     truthseeker = appendGisPyData(truthseeker, "truthseeker")
     truthseeker.to_csv("data/preprocessed/truthseeker.csv")
