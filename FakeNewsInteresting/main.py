@@ -17,7 +17,6 @@ try:
     preprocess.express(logger)
     process.express(logger)
 except Exception as e:
-    logger.log(repr(e))
     logger.log(format_exc())
     raise e
     
