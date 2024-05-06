@@ -1,1 +1,0 @@
-@DHSWI Wisconsin is 34th of 50 states in tests per million pop.  You have indicated that test lab capacity is 3,938/day, but average daily test are well below 2,000/day, so there must be some other limiting factor.  What is the testing bottleneck?  What are you doing to fix it?

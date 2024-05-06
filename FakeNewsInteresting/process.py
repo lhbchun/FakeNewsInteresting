@@ -203,8 +203,6 @@ def initDataset(includeText=False, includeLabel=False, returnList=False):
     if returnList:
         return listData
 
-    global a, b, c, d, e, f, g, h
-
     a = covidRumor[covidRumor["label"] == "F"].reset_index(drop=True)
     b = covidRumor[covidRumor["label"] == "T"].reset_index(drop=True)
     c = constraintAAAI[constraintAAAI["label"] == "fake"].reset_index(drop=True)
@@ -214,7 +212,6 @@ def initDataset(includeText=False, includeLabel=False, returnList=False):
     g = truthseeker[~truthseeker["target"]].reset_index(drop=True)
     h = truthseeker[truthseeker["target"]].reset_index(drop=True)
 
-    global listData
     listData = [a, b, c, d, e, f, g, h]
 
 
@@ -557,8 +554,8 @@ def express(logger: Logger):
         random_state=928,
     )
     dtc1.fit(xTrain, yTrain)
-    print("Training accuracy: " + str(accuracy_score(dtc1.predict(xTrain), yTrain)))
-    print("Testing accuracy: " + str(accuracy_score(dtc1.predict(xTest), yTest)))
+    logger.log("Training accuracy: " + str(accuracy_score(dtc1.predict(xTrain), yTrain)))
+    logger.log("Testing accuracy: " + str(accuracy_score(dtc1.predict(xTest), yTest)))
 
     # pd.concat([
     #     pd.DataFrame(xTrain.columns.tolist(), columns = ["Name"]),
@@ -570,8 +567,8 @@ def express(logger: Logger):
     ## LGBM
     lgb1 = LGBMClassifier(n_estimators=1000, importance_type="gain", random_state=928)
     lgb1.fit(xTrain, yTrain)
-    print("Training accuracy: " + str(accuracy_score(lgb1.predict(xTrain), yTrain)))
-    print("Testing accuracy: " + str(accuracy_score(lgb1.predict(xTest), yTest)))
+    logger.log("Training accuracy: " + str(accuracy_score(lgb1.predict(xTrain), yTrain)))
+    logger.log("Testing accuracy: " + str(accuracy_score(lgb1.predict(xTest), yTest)))
 
     initDataset(includeText=False, includeLabel=True)
 
@@ -611,8 +608,8 @@ def express(logger: Logger):
     )
     dtc2.fit(xTrain, yTrain)
 
-    print("Training accuracy: " + str(accuracy_score(dtc2.predict(xTrain), yTrain)))
-    print("Testing accuracy: " + str(accuracy_score(dtc2.predict(xTest), yTest)))
+    logger.log("Training accuracy: " + str(accuracy_score(dtc2.predict(xTrain), yTrain)))
+    logger.log("Testing accuracy: " + str(accuracy_score(dtc2.predict(xTest), yTest)))
     # pd.concat([
     #     pd.DataFrame(xTrain.columns.tolist(), columns = ["Name"]),
     #     pd.DataFrame(dtc2.feature_importances_, columns = ["Importance"])
@@ -623,15 +620,15 @@ def express(logger: Logger):
     ada2 = AdaBoostClassifier(n_estimators=1000, random_state=928)
     ada2.fit(xTrain, yTrain)
 
-    print("Training accuracy: " + str(accuracy_score(ada2.predict(xTrain), yTrain)))
-    print("Testing accuracy: " + str(accuracy_score(ada2.predict(xTest), yTest)))
+    logger.log("Training accuracy: " + str(accuracy_score(ada2.predict(xTrain), yTrain)))
+    logger.log("Testing accuracy: " + str(accuracy_score(ada2.predict(xTest), yTest)))
 
     ## LGBM
     lgb2 = LGBMClassifier(n_estimators=1000, importance_type="gain", random_state=928)
     lgb2.fit(xTrain, yTrain)
 
-    print("Training accuracy: " + str(accuracy_score(lgb2.predict(xTrain), yTrain)))
-    print("Testing accuracy: " + str(accuracy_score(lgb2.predict(xTest), yTest)))
+    logger.log("Training accuracy: " + str(accuracy_score(lgb2.predict(xTrain), yTrain)))
+    logger.log("Testing accuracy: " + str(accuracy_score(lgb2.predict(xTest), yTest)))
 
     initDataset(includeText=False, includeLabel=True)
     xy = pd.concat([a, b, c, d, e, f, g, h])
@@ -666,8 +663,8 @@ def express(logger: Logger):
     )
     dtc3.fit(xTrain, yTrain)
 
-    print("Training accuracy: " + str(accuracy_score(dtc3.predict(xTrain), yTrain)))
-    print("Testing accuracy: " + str(accuracy_score(dtc3.predict(xTest), yTest)))
+    logger.log("Training accuracy: " + str(accuracy_score(dtc3.predict(xTrain), yTrain)))
+    logger.log("Testing accuracy: " + str(accuracy_score(dtc3.predict(xTest), yTest)))
     pd.concat(
         [
             pd.DataFrame(xTrain.columns.tolist(), columns=["Name"]),
@@ -679,8 +676,8 @@ def express(logger: Logger):
     ada3 = AdaBoostClassifier(n_estimators=1000, random_state=928)
     ada3.fit(xTrain, yTrain)
 
-    print("Training accuracy: " + str(accuracy_score(ada3.predict(xTrain), yTrain)))
-    print("Testing accuracy: " + str(accuracy_score(ada3.predict(xTest), yTest)))
+    logger.log("Training accuracy: " + str(accuracy_score(ada3.predict(xTrain), yTrain)))
+    logger.log("Testing accuracy: " + str(accuracy_score(ada3.predict(xTest), yTest)))
     pd.concat(
         [
             pd.DataFrame(xTrain.columns.tolist(), columns=["Name"]),
@@ -693,8 +690,8 @@ def express(logger: Logger):
     lgb3 = LGBMClassifier(n_estimators=1000, importance_type="gain", random_state=928)
     lgb3.fit(xTrain, yTrain)
 
-    print("Training accuracy: " + str(accuracy_score(lgb3.predict(xTrain), yTrain)))
-    print("Testing accuracy: " + str(accuracy_score(lgb3.predict(xTest), yTest)))
+    logger.log("Training accuracy: " + str(accuracy_score(lgb3.predict(xTrain), yTrain)))
+    logger.log("Testing accuracy: " + str(accuracy_score(lgb3.predict(xTest), yTest)))
     pd.concat(
         [
             pd.DataFrame(xTrain.columns.tolist(), columns=["Name"]),
@@ -733,19 +730,19 @@ def express(logger: Logger):
             temp.append([relationFunction[j](k) for k in listTopics[i]])
         contentTopics.append(temp)
 
-    print("vaccine related percentage: " + str(round(vacRelated.sum() / len(Z0), 4)))
-    print(
+    logger.log("vaccine related percentage: " + str(round(vacRelated.sum() / len(Z0), 4)))
+    logger.log(
         "infection related percentage: " + str(round(infecRelated.sum() / len(Z0), 4))
     )
-    print(
+    logger.log(
         "prevention related percentage: " + str(round(prevRelated.sum() / len(Z0), 4))
     )
-    print("test related percentage: " + str(round(testRelated.sum() / len(Z0), 4)))
-    print(
+    logger.log("test related percentage: " + str(round(testRelated.sum() / len(Z0), 4)))
+    logger.log(
         "social event related percentage: "
         + str(round(socEventRelated.sum() / len(Z0), 4))
     )
-    print(
+    logger.log(
         "sympton related percentage: " + str(round(symptomRelated.sum() / len(Z0), 4))
     )
 
@@ -759,7 +756,7 @@ def express(logger: Logger):
         ),
         symptomRelated,
     )
-    print("covered percentage: " + str(round(covered.sum() / len(Z0), 4)))
+    logger.log("covered percentage: " + str(round(covered.sum() / len(Z0), 4)))
 
     topics = [
         vacRelated,
@@ -804,7 +801,7 @@ def express(logger: Logger):
         for j in topics:
             related.append(np.array([j(k) for k in Z0]))
         result.append(related)
-    print(result)
+    logger.log(result)
 
     pd.DataFrame(
         np.array([[round(i.sum() / len(i), 4) for i in j] for j in result]).T,

@@ -1,1 +1,0 @@
-@ZubyMusic The issue with asymptomatic transmission started in early 2020 when they were trying to estimate the R0 for Covid-19 based on infection chains. The models with some pre-symptomatic spread were better suited to other real-world observations, so they were adopted.

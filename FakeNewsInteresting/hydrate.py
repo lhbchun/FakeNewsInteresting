@@ -1,5 +1,6 @@
 import time, json, os, datetime, calendar
 import snscrape
+from verboseLogger import Logger
 
 def getUserLink(tweet):
     try:
@@ -62,7 +63,7 @@ def hydrateTweets(
 
     while pointer < len(tweetList):
         if isTweetHydrated(directoryIfFailed, tweetList[pointer]):
-            print("Tweet hydration failed previously: " + str(tweetList[pointer]))
+            logger.log("Tweet hydration failed previously: " + str(tweetList[pointer]))
             if not retryFailed:
                 pointer += batch
                 continue
@@ -75,26 +76,26 @@ def hydrateTweets(
                         thisTweet = tweetToDict(i)
                         saveTweet(directory, thisTweet)
                     else:
-                        print("Note: Tweets Deleted for" + str(tweetList[pointer]))
+                        logger.log("Note: Tweets Deleted for" + str(tweetList[pointer]))
                         savePlaceholder(
                             directoryIfFailed,
                             str(tweetList[pointer]) + ".json",
                             "Deleted",
                         )
             except snscrape.base.ScraperException:
-                print("Note: Tweets Result Error for" + str(tweetList[pointer]))
+                logger.log("Note: Tweets Result Error for" + str(tweetList[pointer]))
                 savePlaceholder(
                     directoryIfFailed, str(tweetList[pointer]) + ".json", "Not Scraped"
                 )
             except KeyError:  # Some are deleted, rest are mostly politicians/news
-                print("KeyError: " + str(tweetList[pointer]))
+                logger.log("KeyError: " + str(tweetList[pointer]))
                 savePlaceholder(
                     directoryIfFailed,
                     str(tweetList[pointer]) + ".json",
                     "Unknown Key Error",
                 )
         else:
-            print("Tweet already Hydrated: " + str(tweetList[pointer]))
+            logger.log("Tweet already Hydrated: " + str(tweetList[pointer]))
         pointer += batch
 
 
@@ -169,10 +170,10 @@ def fetchOfficialCommunication(handle):
 
 
 # misc
-def express(text):
+def express(text, logger: Logger):
     if text != "unlock":
-        print("This is a function that takes a very long time to output.")
-        print("If you want to load/reload the output, type 'unlock' as the argument.")
+        logger.log("This is a function that takes a very long time to output.")
+        logger.log("If you want to load/reload the output, type 'unlock' as the argument.")
         return
     fetchOfficialCommunication("WHO")  # Done
     fetchOfficialCommunication("NHSEngland")  # Done

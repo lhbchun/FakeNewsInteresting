@@ -1,1 +1,0 @@
-RDT test ,False-positive results  that is, a test showing that a person is infected when they are not  could occur if the antibodies on the test strip also recognize antigens of viruses other than COVID-19, such as from human coronaviruses that cause the common cold.

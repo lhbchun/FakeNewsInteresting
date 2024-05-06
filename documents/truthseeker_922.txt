@@ -1,1 +1,0 @@
-We reported 74,000+ tests in one day this weekend and are averaging 50,000+ tests per day. We're one of the few states to do 5 million+ tests.

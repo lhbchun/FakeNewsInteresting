@@ -1,1 +1,20 @@
-Logging start on 2024-05-06 18:33:48
+Logging start on 2024-05-07 00:55:28
+Importing Hydrate
+Importing preprocess
+Importing process
+OSError(22, 'Invalid argument')
+Traceback (most recent call last):
+  File "C:\Users\chun_\OneDrive - HKUST Connect\Warwick\PS928\FakeNewsInteresting\FakeNewsInteresting\main.py", line 17, in <module>
+    preprocess.express(logger)
+  File "C:\Users\chun_\OneDrive - HKUST Connect\Warwick\PS928\FakeNewsInteresting\FakeNewsInteresting\preprocess.py", line 483, in express
+    offcomm = compileHydratedData("data\\officalcomm").reset_index(drop=True)
+  File "C:\Users\chun_\OneDrive - HKUST Connect\Warwick\PS928\FakeNewsInteresting\FakeNewsInteresting\preprocess.py", line 445, in compileHydratedData
+    returnValue = pd.concat([returnValue, compileHydratedData(f)])  ##
+  File "C:\Users\chun_\OneDrive - HKUST Connect\Warwick\PS928\FakeNewsInteresting\FakeNewsInteresting\preprocess.py", line 445, in compileHydratedData
+    returnValue = pd.concat([returnValue, compileHydratedData(f)])  ##
+  File "C:\Users\chun_\OneDrive - HKUST Connect\Warwick\PS928\FakeNewsInteresting\FakeNewsInteresting\preprocess.py", line 447, in compileHydratedData
+    jsonDict = json.load(open(f))
+  File "C:\ProgramData\Anaconda3\lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+OSError: [Errno 22] Invalid argument
+

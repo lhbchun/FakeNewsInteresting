@@ -1,6 +1,0 @@
-COVID Case Count:
-1) One person can test positive multiple times and is counted every time they test
-
-2) A positive for the "Anitbody" test is counted as a new case --- important to note the CDC website says the common cold can cause positives
-
-3) MANY reports of false positives

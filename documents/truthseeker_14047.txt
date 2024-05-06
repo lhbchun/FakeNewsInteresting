@@ -1,1 +1,0 @@
-@JujuliaGrace I'm concerned that a Dr doesn't understand that the % of tests yielding a positive result has been pretty much the same over the last 200 days or so and if cases are going up it is simply because we are testing more.

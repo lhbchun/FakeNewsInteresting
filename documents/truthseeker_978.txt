@@ -1,6 +1,0 @@
-@axios 5,000,000 / 50 (states) = 100,000
-100,000 / 8 (hours a day) = 12,500 tests per state per day
-
-yeah, can't be done
-
-just give up

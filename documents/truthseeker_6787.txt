@@ -1,7 +1,0 @@
--  63% efficacy against asymptomatic Covid-19 transmission
-
--  65% efficacy against the B.1. 617.2 Delta Variant
- 
--  Minimal adverse events post-vaccination
-
-@BharatBiotech

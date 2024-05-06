@@ -1,1 +1,0 @@
-@ScottAdamsSays I would expect any instant test to have a rather high false positive false negative factor. Their are some carona viruses that cause the common cold. I wonder how well it would distinguish in such a fast timeframe?  Anyone know?

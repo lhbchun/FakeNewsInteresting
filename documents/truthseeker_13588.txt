@@ -1,1 +1,0 @@
-Seems like RDT is making lots of confusion. Sensitivity of RDT may vary highly, so it may be false positive result OR FP because the antibodies on the test strip also recognize antigens of viruses other than COVID-19, such as from human coronaviruses that cause the common cold.

@@ -1,1 +1,0 @@
-The program will help identify students who may be positive for COVID-19 but asymptomatic, curbing transmission among students in high-contact activities like sports and clubs.

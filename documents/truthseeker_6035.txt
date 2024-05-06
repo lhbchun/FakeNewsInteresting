@@ -1,4 +1,0 @@
-@Cernovich 1. The herd immunity equation of 1-(1/R0) gives is 85% (delta r0 is = 7)
-2. Unvaccinated have caused variants eg alpha and delta.
-3. See 2.
-4. The concern about new variants is where you have pop with insufficiently high vaccination rate + high case load + time = escape variant.

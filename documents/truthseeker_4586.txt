@@ -1,1 +1,0 @@
-Businesses requiring your own verification of your vaccination status is not a HIPAA violation. HIPAA applies to *doctors* storing and sharing your medical information, not you sharing your own medical information.

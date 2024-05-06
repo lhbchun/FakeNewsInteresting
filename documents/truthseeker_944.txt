@@ -1,4 +1,0 @@
-Other states are rampingup their testing, but we are still hardly doing 25k tests per day..
-Other states are doing 50-70k tests
-
-#AskKTR

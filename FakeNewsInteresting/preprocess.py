@@ -361,14 +361,14 @@ def appendFrequency(data, targetCol, fileName):
 
 
 def emptyDocument():
-    target = "C://Users/chun_/GisPy/data/documents"
+    target = "data/documents"
     for filename in os.listdir(target):
         os.remove(target + "/" + filename)
 
 
 def AddDocumentTofolder(df, prefix):
 
-    target = "C://Users/chun_/GisPy/data/documents"
+    target = "data/documents"
     count = 0
 
     for content in df:
@@ -473,13 +473,14 @@ def express(logger: Logger):
     vad = pd.read_csv("data/misc/BRM-emot-submit.csv", index_col=1)
     freq = pd.read_csv("data/misc/unigram_freq.csv")
     emptyDocument()
-    # AddDocumentTofolder(pd.read_csv("data/covidRumor/Twitter.csv")["content"], "covidRumor")
-    # AddDocumentTofolder(pd.read_csv("data/preprocessed/officalComm.csv")["rawContent"], "offComm")
-    # AddDocumentTofolder(pd.read_csv("data/constraintAAAI/Constraint_Train.csv")["tweet"], "constraintAAAI")
+    AddDocumentTofolder(pd.read_csv("data/covidRumor/Twitter.csv")["content"], "covidRumor")
+    AddDocumentTofolder(pd.read_csv("data/preprocessed/officalComm.csv")["rawContent"], "offComm")
+    AddDocumentTofolder(pd.read_csv("data/constraintAAAI/Constraint_Train.csv")["tweet"], "constraintAAAI")
     AddDocumentTofolder(
         pd.read_csv("data/preprocessed/coaid_NoFeature.csv")["rawContent"], "coaid"
     )
 
+    offcomm = compileHydratedData("data\\officalcomm").reset_index(drop=True)
     # filter
     ind = offcomm["rawContent"].apply(isCovidRelated)
     offcomm = offcomm[ind].reset_index(drop=True)
@@ -530,7 +531,7 @@ def express(logger: Logger):
     coaid = appendGisPyData(coaid, "coaid")
     coaid.to_csv("data/preprocessed/coaid.csv")
     
-    offcomm = compileHydratedData("data\\officalcomm").reset_index(drop=True)
+    
 
     truthseeker = pd.read_csv("data/Truth_Seeker_Model_Dataset.csv", index_col=0)
     truthseeker = truthseeker[

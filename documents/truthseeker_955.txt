@@ -1,1 +1,0 @@
-@DHSWI Wisconsin is 38th out of 50 states in testing per capita.  We have 40% less tests than Utah, and they have half the population of Wisconsin.  You say we have lab capacity for 10k tests per day, but we averaged 2.3k tests/day over the last week.  Find and fix the bottleneck.

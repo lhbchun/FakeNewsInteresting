@@ -1,1 +1,0 @@
-@boglethemind @TakeThatChem Take the amount of bioavailable aluminum in a single vaccine. Divide it by the total body volume into which it distributes, weighted for compartmental effects like blood brain barrier, subtract as a function of clearance, integrate AUC of concentration over time at target tissue.

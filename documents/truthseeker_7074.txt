@@ -1,5 +1,0 @@
-Folks, what are the current thoughts on Delta with regards to:
-
-1. Length of time that someone is capable of asymptomatic transmission before presenting with symptoms.
-
-2. Best time window to get tested after an exposure to someone who later tests positive for Covid-19
