@@ -11,12 +11,14 @@ No reported result is taken from a stored intermediate output file.
 
 ## Contents
 
-- `src/corpus/build_corpus.py` — Reconstructs the labelled analysis corpus, re-derives per-item veracity labels from the source releases, drops items that cannot be labelled unambiguously, and writes `corpus_labelled.csv` (52,917 items).
-- `src/features/recompute_features.py` — Recomputes affective and lexical-frequency features from raw text, including valence, arousal, dominance, word-frequency ranks, and five-class transformer sentiment.
-- `src/features/recompute_transformers.py` — Recomputes model-based concreteness with the published regression model.
-- `src/features/embed_minilm.py` — Produces sentence-transformer embeddings for the reference baseline.
-- `src/analysis/reanalysis.py` — Runs the classification analyses, validation protocols, leakage diagnostic, baselines, transfer and temporal validation, feature importance, calibration, and model comparison. Writes `results_values.json` and `table_*.csv` files.
-- `src/reporting/make_figures.py` — Regenerates Figures 1-4 at 300 dpi from the saved result tables.
+| Source file | What it does |
+|---|---|
+| `src/corpus/build_corpus.py` | Reconstructs the labelled analysis corpus, re-derives per-item veracity labels from the source releases, drops items that cannot be labelled unambiguously, and writes `corpus_labelled.csv` (52,917 items). |
+| `src/features/recompute_features.py` | Recomputes affective and lexical-frequency features from raw text, including valence, arousal, dominance, word-frequency ranks, and five-class transformer sentiment. |
+| `src/features/recompute_transformers.py` | Recomputes model-based concreteness with the published regression model. |
+| `src/features/embed_minilm.py` | Produces sentence-transformer embeddings for the reference baseline. |
+| `src/analysis/reanalysis.py` | Runs the classification analyses, validation protocols, leakage diagnostic, baselines, transfer and temporal validation, feature importance, calibration, and model comparison. Writes `results_values.json` and `table_*.csv` files. |
+| `src/reporting/make_figures.py` | Regenerates Figures 1-4 at 300 dpi from the saved result tables. |
 
 ---
 
