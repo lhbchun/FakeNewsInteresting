@@ -73,8 +73,9 @@ classification analyses in `analysis` are comparatively inexpensive.
 
 ## Licence
 
-A licence for this code is to be confirmed by the authors before deposit (a
-permissive licence such as MIT or BSD-3-Clause is suggested). The source datasets
-retain their own licences.
+The source code in this repository is licensed under the MIT License (see
+[LICENSE](LICENSE)). Third-party datasets, pretrained models, lexicons, and
+other external assets are not covered by this license and remain subject to
+their own terms.
 
 This repository was developed with assistance from Claude Opus 5.5 for code refactoring and quality maintenance to improve manuscript quality.
